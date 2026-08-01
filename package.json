@@ -1,7 +1,7 @@
 {
   "name": "unison",
   "version": "1.0.0",
-  "description": "It finds the chromatic notes in what it hears and sings them back at you.",
+  "description": "Chromatic note detection and aural mirror",
   "license": "Apache-2.0",
   "private": true,
   "repository": {
