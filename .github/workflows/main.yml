@@ -45,9 +45,16 @@ jobs:
       #   gh api -X PUT repos/another-machine/unison/pages -f cname=...
       - run: echo "unison.amplib.app" > dist/CNAME
 
-      # enablement: true so a fresh clone of this repo deploys without anyone
-      # first clicking through Settings → Pages. Without it the very first run
-      # fails with "Get Pages site failed" and nothing explains why.
+      # enablement: true does NOT make this self-sufficient in this org — the
+      # first run here failed with "Create Pages site failed: Resource not
+      # accessible by integration", because the workflow's GITHUB_TOKEN is not
+      # allowed to create a Pages site. The site has to exist first, made once
+      # with a real token:
+      #   gh api -X POST repos/another-machine/unison/pages -f build_type=workflow
+      #   gh api -X PUT  repos/another-machine/unison/pages -f cname=unison.amplib.app
+      #   gh api -X PUT  repos/another-machine/unison/pages -F https_enforced=true
+      # The flag stays because it is harmless once the site exists and correct
+      # anywhere the token does have the permission.
       - uses: actions/configure-pages@v5
         with:
           enablement: true
