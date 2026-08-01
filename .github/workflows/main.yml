@@ -1,0 +1,58 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race, but never cancel one that is already publishing.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # `npm ci` rather than `npm i` — the lockfile pins @amplib/* to the exact
+      # published builds this was tested against. A floating install would let a
+      # patch release change the detector under a deploy nobody triggered.
+      - run: npm ci
+
+      # This one IS gated on the typecheck, unlike modulo — it starts clean, and
+      # the cheapest time to keep it that way is before the first error lands.
+      - run: npm run typecheck
+      - run: npm run build
+
+      # This CNAME does NOT set the custom domain. That is a repo setting, and
+      # for an Actions-based deploy GitHub ignores the file in the artifact. The
+      # file is kept only so the domain is visible in the diff and survives a
+      # branch-based fallback. To change the domain, change the repo setting:
+      #   gh api -X PUT repos/another-machine/unison/pages -f cname=...
+      - run: echo "unison.amplib.app" > dist/CNAME
+
+      # enablement: true so a fresh clone of this repo deploys without anyone
+      # first clicking through Settings → Pages. Without it the very first run
+      # fails with "Get Pages site failed" and nothing explains why.
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./dist"
+      - id: deployment
+        uses: actions/deploy-pages@v4

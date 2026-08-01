@@ -1,0 +1,28 @@
+/**
+ * Everything here is either a token retune or a thing amplib-ui deliberately
+ * has no opinion about (the canvas, a video box). Declared in a layer after
+ * the system's own so it overrides without specificity games.
+ */
+@layer amplib.app {
+  #scope {
+    block-size: 40vh;
+    inline-size: 100%;
+    min-block-size: 12rem;
+    /* the canvas IS the frame's subject — no second border inside one */
+    border: 0;
+    display: block;
+  }
+
+  #media {
+    background: var(--ht-bg-base);
+    display: block;
+    inline-size: 100%;
+    max-block-size: 50vh;
+  }
+
+  /* An audio-only file in a video element is a black rectangle with a
+     control bar at the bottom. Collapse it to just the control bar. */
+  #media[data-audio-only] {
+    block-size: 3rem;
+  }
+}

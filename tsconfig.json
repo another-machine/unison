@@ -1,0 +1,21 @@
+{
+  // Parcel transpiles without type-checking, so `npm run typecheck` is the only
+  // thing that does. It is clean, and the deploy gates on it — keep it that way.
+  //
+  // moduleResolution "bundler" matches how this is actually consumed — Parcel —
+  // and matches the @amplib packages, which are ESM with a "types" entry.
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts"]
+}

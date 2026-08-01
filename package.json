@@ -1,0 +1,25 @@
+{
+  "name": "unison",
+  "version": "1.0.0",
+  "description": "It finds the chromatic notes in what it hears and sings them back at you.",
+  "license": "Apache-2.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/another-machine/unison.git"
+  },
+  "source": "src/index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build --no-cache",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@amplib/devices": "^0.2.0",
+    "@amplib/music-detection": "^0.1.0"
+  },
+  "devDependencies": {
+    "parcel": "^2.12.0",
+    "typescript": "^5.5.4"
+  }
+}
