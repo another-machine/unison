@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@amplib/devices": "^0.2.0",
-    "@amplib/music-detection": "^0.1.0",
+    "@amplib/music-detection": "^0.2.0",
     "@amplib/ui": "^0.1.0"
   },
   "devDependencies": {
